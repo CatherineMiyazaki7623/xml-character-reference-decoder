@@ -30,3 +30,10 @@ The `x` in `&#x...;` is lowercase by spec; `&#X61;` is not a reference and is le
 
 - `decode(text: str) -> str` — decode all numeric character references, passing malformed ones through unchanged.
 - `decode_iter(text: str)` — iterator yielding `(is_decoded: bool, chunk: str)` tuples, for callers that need to know which text came from a reference.
+
+## Performance
+
+The window keeps a bounded buffer, so `push` is constant time and memory does not
+grow with the length of the stream. `peak` and `trough` are linear in the window
+size, which is the trade that keeps `push` cheap.
+
